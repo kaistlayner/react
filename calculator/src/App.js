@@ -23,7 +23,7 @@ class App extends React.Component {
         </div>
         <div id="calculatorBody">
           <div className="buttonWrap">
-            <button onClick={inputc('CE')}>CE</button>
+            <button onClick={inputc('AC')}>AC</button>
             <button onClick={inputc('(')}>(</button>
             <button onClick={inputc(')')}>)</button>
             <button onClick={inputc('X')}>X</button>
@@ -59,52 +59,50 @@ class App extends React.Component {
 }*/
 
 const App = () => {
-  const cals = ['+', '-', '*', '/', '=', 'CE', 'del', '('];
+  const cals = ['+', '-', '*', '/', '=', 'AC', 'del', '('];
+  const fours = ['+', '-', '*', '/'];
   const adds = ['+', '-'];
   const muls = ['*', '/'];
-  //const [historyFlag, historyFlagTo] = useState(false);
+
   const [hisList, setHisList] = useState([]);
-  const [body, bodyset] = useState();
-  //const [temp, tempset] = useState('');
+  //const [body, setBody] = useState();
 
   const [flag, setFlag] = useState(false);
+  const [popupOn, setPopupOn] = useState(false);
   const [lcnt, setLcnt] = useState(0);
   const [rcnt, setRcnt] = useState(0);
   const [last, setLast] = useState('');
   const [inputs, setInputs] = useState('0');
 
   const PrintHistory = () => {
-    for(let i = 0; i < hisList.length; i++){
-      //bodyset(body + <li>${hisList[i]}</li>);
+    let temp = hisList[hisList.length-1];
+    for(let i = hisList.length - 2; i >= 0 ; i--){
+        temp += `\n${hisList[i]}`
     }
-    //return (`${body}`);
-    return (
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-      </ul>
-    );
+    document.getElementById("popupContent").innerHTML=temp;
+    return;
+    /*return (
+      <div>
+        1<br/>2<br/>adfgssgese<br/>4<br/>zsefszefge<br/>e<br/>2<br/>3<br/>
+      </div>
+    );*/
   }
 
-  const historyOn = () => {
-    //historyFlagTo(true);
-    const popup = document.querySelector('#popup');
-    popup.classList.remove('hide');
-  }
-
-  const historyOff = () => {
-    //historyFlagTo(false);
-    const popup = document.querySelector('#popup');
-    popup.classList.add('hide');
+  const PopupOn = (bool) => {
+    setPopupOn(bool);
+    //const popup = document.querySelector('#popup');
+    //popup.classList.remove('hide');
   }
 
   const inputc = (c) => {
     if(c === ')'){
-      if(rcnt >= lcnt) return;
+      if(rcnt >= lcnt || cals.indexOf(last) !== -1) return;
       setRcnt(rcnt + 1);
     }
-    else if(c === '(') setLcnt(lcnt + 1);
+    else if(c === '('){
+      if(cals.indexOf(last) === -1 && last !== '') return;
+      setLcnt(lcnt + 1);
+    }
 
     if(inputs === '0'){
       if(cals.indexOf(c) !== -1 && c !== '-' && c !== '(') return;
@@ -124,10 +122,11 @@ const App = () => {
       
       setHisList(hisList.concat(inputs + ' = ' + temp));
       setInputs(temp);
+      setLast('');
       setLcnt(0);
       setRcnt(0);
     }
-    else if(c === 'CE'){
+    else if(c === 'AC'){
       setInputs('0');
       setLcnt(0);
       setRcnt(0);
@@ -136,13 +135,16 @@ const App = () => {
       setInputs(inputs.slice(0, -1));
       if(last === '(') setLcnt(lcnt - 1);
       else if(last === ')') setRcnt(rcnt - 1);
-      setLast(inputs[-1]);
+      setLast(inputs[inputs.length - 1]);
     }
     else{
-      if(adds.indexOf(last) !== -1){
-        if(cals.indexOf(c) !== -1){
-          if(flag){
-            return;
+      if(last === '/' && c === '0') return;
+      else if(adds.indexOf(last) !== -1){
+        if(fours.indexOf(c) !== -1){
+          if(muls.indexOf(c) !== -1){
+            if(flag){
+              return;
+            }
           }
           setInputs(inputs.slice(0, -1) + c);
         }
@@ -165,20 +167,20 @@ const App = () => {
   };
 
   console.log(hisList);
+  console.log("last: " + last + "\tcur: " + inputs);
 
   return (
-    <div id="calculator">
+    <div>
+      <div id="calculator">
         <div id="display">
-          <div id="popup" className="hide">
-            <div className="popupContent">
-              <PrintHistory/>
-              <div id="historyOff">
-                <button id="historyButton" onClick={()=>historyOff()}>@</button>
-              </div>
+          <div id="popup" className={popupOn ? "" : "hide"}>
+            <div id="popupOff">
+              <button id="popupButton" onClick={()=>PopupOn(false)}>@</button>
             </div>
+            <pre id='popupContent' onLoad={()=>PrintHistory()}></pre>
           </div>
-          <div id="historyOn">
-            <button id="historyButton" onClick={()=>historyOn()}>@</button>
+          <div id="popupOn" className={popupOn ? "hide" : ""}>
+            <button id="popupButton" onClick={()=>PopupOn(true)}>@</button>
           </div>
           <div id="answer">
             <Cal inputstr={inputs} id={1}/>
@@ -186,37 +188,38 @@ const App = () => {
         </div>
         <div id="calculatorBody">
           <div className="buttonWrap">
-            <button onClick={()=>inputc('CE')}>CE</button>
-            <button onClick={()=>inputc('(')}>(</button>
-            <button onClick={()=>inputc(')')}>)</button>
-            <button onClick={()=>inputc('*')}>*</button>
+            <button className="cals" onClick={()=>inputc('(')}>(</button>
+            <button className="cals" onClick={()=>inputc(')')}>)</button>
+            <button className="cals" onClick={()=>inputc('del')}>del</button>
+            <button className="cals" onClick={()=>inputc('AC')}>AC</button>
           </div>
           <div className="buttonWrap">
             <button onClick={()=>inputc('7')}>7</button>
             <button onClick={()=>inputc('8')}>8</button>
             <button onClick={()=>inputc('9')}>9</button>
-            <button onClick={()=>inputc('/')}>/</button>
+            <button className="cals" onClick={()=>inputc('/')}>/</button>
           </div>
           <div className="buttonWrap">
             <button onClick={()=>inputc('4')}>4</button>
             <button onClick={()=>inputc('5')}>5</button>
             <button onClick={()=>inputc('6')}>6</button>
-            <button onClick={()=>inputc('-')}>-</button>
+            <button className="cals" onClick={()=>inputc('*')}>*</button>
           </div>
           <div className="buttonWrap">
             <button onClick={()=>inputc('1')}>1</button>
             <button onClick={()=>inputc('2')}>2</button>
             <button onClick={()=>inputc('3')}>3</button>
-            <button onClick={()=>inputc('+')}>+</button>
+            <button className="cals" onClick={()=>inputc('-')}>-</button>
           </div>
           <div className="buttonWrap">
-            <button onClick={()=>inputc('.')}>.</button>
             <button onClick={()=>inputc('0')}>0</button>
-            <button onClick={()=>inputc('del')}>del</button>
-            <button onClick={()=>inputc('=')}>=</button>
+            <button onClick={()=>inputc('.')}>.</button>
+            <button className="ans" onClick={()=>inputc('=')}>=</button>
+            <button className="cals" onClick={()=>inputc('+')}>+</button>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 
