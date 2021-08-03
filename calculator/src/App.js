@@ -78,11 +78,13 @@ const App = () => {
       //bodyset(body + `<li>${hisList[i]}</li>`);
     }
     //return (`${body}`);
-    return `
-    <div>
-      sth
-    <div/>
-    `;
+    return (
+      <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+      </ul>
+    );
   }
 
   const historyOn = () => {
@@ -169,9 +171,7 @@ const App = () => {
         <div id="display">
           <div id="popup" className="hide">
             <div className="popup_content">
-              <ul>
-                <PrintHistory/>
-              </ul>
+              <PrintHistory/>
               <div id="historyOff">
                 <button id="history_button" onClick={()=>historyOff()}>@</button>
               </div>
