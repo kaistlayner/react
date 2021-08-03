@@ -58,27 +58,31 @@ class App extends React.Component {
   };
 }*/
 
-
-
-
 const App = () => {
   const cals = ['+', '-', '*', '/', '=', 'CE', 'del', '('];
   const adds = ['+', '-'];
   const muls = ['*', '/'];
   //const [historyFlag, historyFlagTo] = useState(false);
   const [hisList, historySet] = useState([]);
+  const [body, bodyset] = useState('');
+  //const [temp, tempset] = useState('');
+
   const [flag, setFlag] = useState(false);
   const [lcnt, setl] = useState(0);
   const [rcnt, setr] = useState(0);
   const [last, setLast] = useState('');
   const [inputs, setInputs] = useState('0');
 
-  const PrintHistory = (hisList) => {
-    var body = "";
-    for(var h in hisList){
-      body = body + `<li>${h}</li>`
+  const PrintHistory = () => {
+    for(let i = 0; i < hisList.length; i++){
+      //bodyset(body + `<li>${hisList[i]}</li>`);
     }
-    return body;
+    //return (`${body}`);
+    return `
+    <div>
+      sth
+    <div/>
+    `;
   }
 
   const historyOn = () => {
@@ -114,10 +118,10 @@ const App = () => {
     else if(c === '='){
       if(cals.indexOf(last) !== -1 && last !== ')') return;
       else if(lcnt !== rcnt) return;
-      var temp = eval(inputs).toString();
+      let temp = eval(inputs).toString();
+      
+      historySet(hisList.concat(inputs + ' = ' + temp));
       setInputs(temp);
-      hisList.push(inputs + ' = ' + temp);
-      console.log(hisList);
       setl(0);
       setr(0);
     }
@@ -158,13 +162,15 @@ const App = () => {
     }
   };
 
+  console.log(hisList);
+
   return (
     <div id="calculator">
         <div id="display">
           <div id="popup" className="hide">
             <div className="popup_content">
               <ul>
-                <PrintHistory hisList = {hisList}/>
+                <PrintHistory/>
               </ul>
               <div id="historyOff">
                 <button id="history_button" onClick={()=>historyOff()}>@</button>
