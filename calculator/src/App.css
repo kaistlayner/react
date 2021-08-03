@@ -9,9 +9,7 @@
 }
 
 #display{
-  display: flex;
   flex-grow: 0;
-  flex-direction:row;
 
   border: 0.1rem solid black;
   background-color: rgba(10, 190, 22, 0.02);
@@ -34,7 +32,7 @@
   margin-bottom: auto;
 }
 
-#history_button{
+#historyButton{
   background-color: rgb(147, 251, 255);
   text-align: center;
   
@@ -52,8 +50,9 @@
   display: none;
 }
 
-#popup.hide{
-  display: none;
+.popupContent{
+  display: flex;
+  flex-direction:column;
 }
 
 #calculatorBody{

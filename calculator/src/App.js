@@ -63,19 +63,19 @@ const App = () => {
   const adds = ['+', '-'];
   const muls = ['*', '/'];
   //const [historyFlag, historyFlagTo] = useState(false);
-  const [hisList, historySet] = useState([]);
-  const [body, bodyset] = useState('');
+  const [hisList, setHisList] = useState([]);
+  const [body, bodyset] = useState();
   //const [temp, tempset] = useState('');
 
   const [flag, setFlag] = useState(false);
-  const [lcnt, setl] = useState(0);
-  const [rcnt, setr] = useState(0);
+  const [lcnt, setLcnt] = useState(0);
+  const [rcnt, setRcnt] = useState(0);
   const [last, setLast] = useState('');
   const [inputs, setInputs] = useState('0');
 
   const PrintHistory = () => {
     for(let i = 0; i < hisList.length; i++){
-      //bodyset(body + `<li>${hisList[i]}</li>`);
+      //bodyset(body + <li>${hisList[i]}</li>);
     }
     //return (`${body}`);
     return (
@@ -102,9 +102,9 @@ const App = () => {
   const inputc = (c) => {
     if(c === ')'){
       if(rcnt >= lcnt) return;
-      setr(rcnt + 1);
+      setRcnt(rcnt + 1);
     }
-    else if(c === '(') setl(lcnt + 1);
+    else if(c === '(') setLcnt(lcnt + 1);
 
     if(inputs === '0'){
       if(cals.indexOf(c) !== -1 && c !== '-' && c !== '(') return;
@@ -122,20 +122,20 @@ const App = () => {
       else if(lcnt !== rcnt) return;
       let temp = eval(inputs).toString();
       
-      historySet(hisList.concat(inputs + ' = ' + temp));
+      setHisList(hisList.concat(inputs + ' = ' + temp));
       setInputs(temp);
-      setl(0);
-      setr(0);
+      setLcnt(0);
+      setRcnt(0);
     }
     else if(c === 'CE'){
       setInputs('0');
-      setl(0);
-      setr(0);
+      setLcnt(0);
+      setRcnt(0);
     }
     else if(c === 'del'){
       setInputs(inputs.slice(0, -1));
-      if(last === '(') setl(lcnt - 1);
-      else if(last === ')') setr(rcnt - 1);
+      if(last === '(') setLcnt(lcnt - 1);
+      else if(last === ')') setRcnt(rcnt - 1);
       setLast(inputs[-1]);
     }
     else{
@@ -170,15 +170,15 @@ const App = () => {
     <div id="calculator">
         <div id="display">
           <div id="popup" className="hide">
-            <div className="popup_content">
+            <div className="popupContent">
               <PrintHistory/>
               <div id="historyOff">
-                <button id="history_button" onClick={()=>historyOff()}>@</button>
+                <button id="historyButton" onClick={()=>historyOff()}>@</button>
               </div>
             </div>
           </div>
           <div id="historyOn">
-            <button id="history_button" onClick={()=>historyOn()}>@</button>
+            <button id="historyButton" onClick={()=>historyOn()}>@</button>
           </div>
           <div id="answer">
             <Cal inputstr={inputs} id={1}/>
