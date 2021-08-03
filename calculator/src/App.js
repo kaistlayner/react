@@ -75,8 +75,10 @@ const App = () => {
   const [inputs, setInputs] = useState('0');
 
   const PrintHistory = () => {
-    let temp = hisList[hisList.length-1];
-    for(let i = hisList.length - 2; i >= 0 ; i--){
+    let l = hisList.length;
+    if(l === 0) return;
+    let temp = hisList[l-1];
+    for(let i = l - 2; i >= 0 ; i--){
         temp += `\n${hisList[i]}`
     }
     document.getElementById("popupContent").innerHTML=temp;
@@ -95,6 +97,8 @@ const App = () => {
   }
 
   const inputc = (c) => {
+    
+
     if(c === ')'){
       if(rcnt >= lcnt || cals.indexOf(last) !== -1) return;
       setRcnt(rcnt + 1);
@@ -104,7 +108,26 @@ const App = () => {
       setLcnt(lcnt + 1);
     }
 
-    if(inputs === '0'){
+    if(c === 'del'){
+      setInputs(inputs.slice(0, -1));
+      if(last === '(') setLcnt(lcnt - 1);
+      else if(last === ')') setRcnt(rcnt - 1);
+      setLast(inputs[inputs.length - 1]);
+    }
+    else if(c === '='){
+      if(cals.indexOf(last) !== -1 && last !== ')') return;
+      else if(lcnt !== rcnt) return;
+      let temp = eval(inputs).toString();
+      
+      if(temp.length > 14) temp = temp.substr(0, 14);
+      setHisList(hisList.concat(inputs + ' = ' + temp));
+      setInputs(temp);
+      setLast('');
+      setLcnt(0);
+      setRcnt(0);
+    }
+    else if(inputs.length > 14) return;
+    else if(inputs === '0'){
       if(cals.indexOf(c) !== -1 && c !== '-' && c !== '(') return;
       else if(c === '-'){
         setInputs(inputs + c);
@@ -115,27 +138,10 @@ const App = () => {
         setLast(c);
       }
     }
-    else if(c === '='){
-      if(cals.indexOf(last) !== -1 && last !== ')') return;
-      else if(lcnt !== rcnt) return;
-      let temp = eval(inputs).toString();
-      
-      setHisList(hisList.concat(inputs + ' = ' + temp));
-      setInputs(temp);
-      setLast('');
-      setLcnt(0);
-      setRcnt(0);
-    }
     else if(c === 'AC'){
       setInputs('0');
       setLcnt(0);
       setRcnt(0);
-    }
-    else if(c === 'del'){
-      setInputs(inputs.slice(0, -1));
-      if(last === '(') setLcnt(lcnt - 1);
-      else if(last === ')') setRcnt(rcnt - 1);
-      setLast(inputs[inputs.length - 1]);
     }
     else{
       if(last === '/' && c === '0') return;
@@ -166,6 +172,7 @@ const App = () => {
     }
   };
 
+  PrintHistory();
   console.log(hisList);
   console.log("last: " + last + "\tcur: " + inputs);
 
@@ -175,12 +182,12 @@ const App = () => {
         <div id="display">
           <div id="popup" className={popupOn ? "" : "hide"}>
             <div id="popupOff">
-              <button id="popupButton" onClick={()=>PopupOn(false)}>@</button>
+              <button id="popupButton" onClick={()=>PopupOn(false)}>★</button>
             </div>
-            <pre id='popupContent' onLoad={()=>PrintHistory()}></pre>
+            <pre id='popupContent'></pre>
           </div>
           <div id="popupOn" className={popupOn ? "hide" : ""}>
-            <button id="popupButton" onClick={()=>PopupOn(true)}>@</button>
+            <button id="popupButton" onClick={()=>PopupOn(true)}>☆</button>
           </div>
           <div id="answer">
             <Cal inputstr={inputs} id={1}/>

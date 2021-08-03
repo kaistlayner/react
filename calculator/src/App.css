@@ -2,22 +2,16 @@
   display:flex;
   flex-direction:column;
   align-items: center;
-  width: max-content;
-
+  width: min-content;
 }
 
 #display{
-
-
-/*
+  /*
   margin: auto;
-
   box-sizing: border-box;
-  
   */
   display: flex;
   flex-direction:row;
-  flex-grow: 0;
   
 
   border: 0.1rem solid #ebebeb;
@@ -33,19 +27,19 @@
 }
 
 #answer{
+  display: inline;
   padding: 1rem;
-  margin-left: auto;
-  margin-top: auto;
+
   font-weight: normal;
-  /*display: table;
-  font-size: 30px;
-  height: 32px;
-  vertical-align: bottom;
-  position: relative;
-  table-layout: fixed;
-  width: 100%;
-  z-index: 0;*/
+  overflow: hidden;
+  float: right;
+  width: 18rem;
+  direction: ltr;
 }
+#display:hover{
+  box-shadow: inset 0 0.03rem 0.2rem rgb(0 0 0 / 10%);
+}
+
 
 #popupOn{
   display: flex;
@@ -76,18 +70,8 @@
 }
 
 #popup{
-  /*
-    
-    max-width: 100%;
-    
-    right: 0.5rem;
-    top: 0.3rem;
-
-  */
-  border-collapse: separate;
   box-shadow: 0 1px 4px rgb(0 0 0 / 28%);
-  box-sizing: border-box;
-  z-index: 1;
+
   top: 1.1rem;
   left: 0.5rem;
 
@@ -95,9 +79,11 @@
   
   border-radius: 0.5rem;
   background-color: #fff;
-  color: #70757a;
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: #1a73e8;
   
-  width: 15.5rem;  
+  min-width: 15.5rem;;
 }
 
 #popup.hide{
