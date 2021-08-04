@@ -46,6 +46,13 @@ const App = () => {
   const inputc = (c) => {
     if(preflag) setPreflag(false);
 
+    if(c === 'AC'){
+      setInputs('0');
+      setLcnt(0);
+      setRcnt(0);
+      return;
+    }
+
     if(c === ')'){
       if(rcnt >= lcnt || cals.indexOf(last) !== -1) return;
       setRcnt(rcnt + 1);
@@ -93,11 +100,6 @@ const App = () => {
         setInputs(c);
         setLast(c);
       }
-    }
-    else if(c === 'AC'){
-      setInputs('0');
-      setLcnt(0);
-      setRcnt(0);
     }
     else{
       if(last === '/' && c === '0') return;
