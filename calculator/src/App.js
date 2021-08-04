@@ -1,62 +1,5 @@
 import React, { useState } from "react";
-import Cal from "./cal";
 import "./App.css"
-/*
-class App extends React.Component {
-  state = {
-    inputStr: ""
-  };
-
-  inputc = (inputChar) => {
-    var inputs = this.state.inputStr + inputChar;
-    this.setState({inputStr: inputs});
-  };
-
-  render() {
-    const {inputStr} = this.state;
-    return(
-      <div id="calculator">
-        <div id="display">
-          <div id="answer">
-            <Cal inputstr={inputStr}/>
-          </div>
-        </div>
-        <div id="calculatorBody">
-          <div className="buttonWrap">
-            <button onClick={inputc('AC')}>AC</button>
-            <button onClick={inputc('(')}>(</button>
-            <button onClick={inputc(')')}>)</button>
-            <button onClick={inputc('X')}>X</button>
-          </div>
-          <div className="buttonWrap">
-            <button onClick={inputc('7')}>7</button>
-            <button onClick={inputc('8')}>8</button>
-            <button onClick={inputc('9')}>9</button>
-            <button onClick={inputc('/')}>/</button>
-          </div>
-          <div className="buttonWrap">
-            <button onClick={inputc('4')}>4</button>
-            <button onClick={inputc('5')}>5</button>
-            <button onClick={inputc('6')}>6</button>
-            <button onClick={inputc('-')}>-</button>
-          </div>
-          <div className="buttonWrap">
-            <button onClick={inputc('1')}>1</button>
-            <button onClick={inputc('2')}>2</button>
-            <button onClick={inputc('3')}>3</button>
-            <button onClick={inputc('+')}>+</button>
-          </div>
-          <div className="buttonWrap">
-            <button onClick={inputc('.')}>.</button>
-            <button onClick={inputc('0')}>0</button>
-            <button onClick={inputc('del')}>del</button>
-            <button onClick={inputc('=')}>=</button>
-          </div>
-        </div>
-      </div>
-    )
-  };
-}*/
 
 const App = () => {
   const cals = ['+', '-', '*', '/', '=', 'AC', 'del', '('];
@@ -65,7 +8,8 @@ const App = () => {
   const muls = ['*', '/'];
 
   const [hisList, setHisList] = useState([]);
-  //const [body, setBody] = useState();
+  const [ansList, setAnsList] = useState([]);
+  const [preflag, setPreflag] = useState(false);
 
   const [flag, setFlag] = useState(false);
   const [popupOn, setPopupOn] = useState(false);
@@ -76,28 +20,31 @@ const App = () => {
 
   const PrintHistory = () => {
     let l = hisList.length;
-    if(l === 0) return;
-    let temp = hisList[l-1];
+    if(l === 0){
+      document.getElementById("popupContent").innerHTML=`이전 계산식과 결과가 여기에 표시되어 다시 사용할 수 있습니다.`;
+      return;
+    }
+    //let temp = hisList[l-1] + " = " + ansList[l-1];
+    let temp = `<div class='historyButtonWrap'><button class="historyButton" id="${l-1}-0">${hisList[l-1]}</button><div id="innerText">=</div><button class="historyButton" id="${l-1}-1">${ansList[l-1]}</button></div>`;
     for(let i = l - 2; i >= 0 ; i--){
-        temp += `\n${hisList[i]}`
+        temp += `\n<div class='historyButtonWrap'><button class="historyButton" id="${i}-0">${hisList[i]}</button><div id="innerText">=</div><button class="historyButton" id="${i}-1">${ansList[i]}</button></div>`;
     }
     document.getElementById("popupContent").innerHTML=temp;
+
+    for(let i = 0; i < l; i++){
+      temp = document.getElementById(`${i}-0`).onclick = () => setInputs(hisList[i]);
+      temp = document.getElementById(`${i}-1`).onclick = () => setInputs(ansList[i]);
+    }
+
     return;
-    /*return (
-      <div>
-        1<br/>2<br/>adfgssgese<br/>4<br/>zsefszefge<br/>e<br/>2<br/>3<br/>
-      </div>
-    );*/
   }
 
   const PopupOn = (bool) => {
     setPopupOn(bool);
-    //const popup = document.querySelector('#popup');
-    //popup.classList.remove('hide');
   }
 
   const inputc = (c) => {
-    
+    if(preflag) setPreflag(false);
 
     if(c === ')'){
       if(rcnt >= lcnt || cals.indexOf(last) !== -1) return;
@@ -120,11 +67,20 @@ const App = () => {
       let temp = eval(inputs).toString();
       
       if(temp.length > 14) temp = temp.substr(0, 14);
-      setHisList(hisList.concat(inputs + ' = ' + temp));
+      
+      if(hisList.length > 4){
+        setHisList(hisList.slice(1).concat(inputs));
+        setAnsList(ansList.slice(1).concat(temp));
+      }
+      else{
+        setHisList(hisList.concat(inputs));
+        setAnsList(ansList.concat(temp));
+      }
       setInputs(temp);
       setLast('');
       setLcnt(0);
       setRcnt(0);
+      setPreflag(true);
     }
     else if(inputs.length > 14) return;
     else if(inputs === '0'){
@@ -172,9 +128,20 @@ const App = () => {
     }
   };
 
-  PrintHistory();
-  console.log(hisList);
-  console.log("last: " + last + "\tcur: " + inputs);
+  if(popupOn === true) PrintHistory();
+  
+  const PrintPre = () => {
+    if(preflag){
+      return hisList[hisList.length-1] + ' =';
+    }
+    else if(ansList.length === 0) return "JMJ's calculator!"
+    else{
+      return 'Ans = ' + ansList[ansList.length-1];
+    }
+  }
+  //console.log(hisList);
+  //console.log(ansList);
+  //console.log("last: " + last + "\tcur: " + inputs);
 
   return (
     <div>
@@ -189,8 +156,13 @@ const App = () => {
           <div id="popupOn" className={popupOn ? "hide" : ""}>
             <button id="popupButton" onClick={()=>PopupOn(true)}>☆</button>
           </div>
-          <div id="answer">
-            <Cal inputstr={inputs} id={1}/>
+          <div id="answers">
+            <div id="preanswer">
+              {PrintPre()}
+            </div>
+            <div id="answer">
+              {inputs}
+            </div>
           </div>
         </div>
         <div id="calculatorBody">
