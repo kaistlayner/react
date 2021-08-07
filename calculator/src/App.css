@@ -1,192 +1,158 @@
-#calculator{
+Calculator{
   display:flex;
   flex-direction:column;
   align-items: center;
   width: min-content;
 }
-
-#display{
-  /*
-  margin: auto;
-  box-sizing: border-box;
-  */
-  display: flex;
-  flex-direction:row;
-  
-
-  border: 0.1rem solid #ebebeb;
-  border-radius: 0.5rem;
-  background-color: rgb(255, 255, 255);
-  text-align: right;
-  font-size: 2rem;
-  font-weight: bold;
-  
-  width: 95.5%;
-  height: 4rem;
-  padding: 0.1rem;
-}
-
-#display:hover{
-  box-shadow: inset 0 0.03rem 0.2rem rgb(0 0 0 / 10%);
-}
-
-#answers{
-  display: flex;
-  flex-direction: column;
-}
-
-#preanswer{
-  display: inline;
-  color: #70757a;
-
-  font-weight: normal;
-  font-size: 0.8rem;
-  overflow: hidden;
-  float: right;
-  width: 18rem;
-  padding-right: 1rem;
-  padding-top: 0.3rem;
-  direction: ltr;
-}
-
-#answer{
-  display: inline;
-  
-
-  font-weight: normal;
-  overflow: hidden;
-  float: right;
-  width: 18rem;
-  direction: ltr;
-}
-
-#popupOn{
-  display: flex;
-  margin-right: auto;
-  margin-bottom: auto;
-}
-
-#popupOn.hide{
-  visibility: hidden;
-}
-
-#popup{
-  box-shadow: 0 1px 4px rgb(0 0 0 / 28%);
-
-  top: 1.1rem;
-  left: 0.5rem;
-
-  position: absolute;
-  
-  border-radius: 0.5rem;
-  background-color: #fff;
-  font-size: 0.8rem;
-  font-weight: normal;
-  
-  min-width: 10rem;;
-  
-}
-
-#popup.hide{
-  display: none;
-}
-
-#popupContent{
-  display: block;
-  text-indent: 1rem;
-  padding-right: 1rem;
-  color: #70757a;
-  line-height: 20px;
-  text-align: center;
-}
-
-#popupOff{
-  display: flex;
-  margin-left: 0.5rem;
-  margin-bottom: auto;
-}
-
-#popupButton{
-  display: block;
-  color: #70757a;
-  float: left;
-  background-color: transparent;
-  text-align: center;
-  font-size: 1rem;
-  width: 2rem;
-  height: 2rem;
-}
-
-.historyButtonWrap{
-  padding-left: 1rem;
-  padding-right: 1rem;
-  display: flex;
-  color: #202124;
-  font-weight: bold;
-  font-size: 1.3rem;
-}
-
-#innerText{
-  display: table-cell;
-  padding: 0.4rem;
-  text-indent: 0;
-  font-weight: bold;
-  color: #70757a;
-  font-size: 1.3rem;
-
-  vertical-align: middle;
-  text-align: center;
-}
-
-.historyButton{
-  display: flex;
-  width: max-content;
-  height: max-content;
-  padding: 0.5rem;
-  background-color: white;
-  color: #1a73e8;
-  border: #DFE1E5 solid 0.1rem;
-}
-
-#popupOff > #popupButton{
-  color: #1a73e8;
-  left: 1rem;
-}
-
-#calculatorBody{
-  padding-top: 0.5rem;
-  background-color: #fff;
-  width: max-content;
-}
-
-.buttonWrap{
-  width: max-content;
-}
-
-button{
-  margin: 0.2rem;
-  background-color: #f1f3f4;
-  color: #202124;
-  border: none;
-  border-radius: 0.5rem;
-  text-align: center;
-  font-size: 0.8rem;
-  width: 5.5rem;
-  height: 2.3rem;
-}
-
-button:active{
-  background-color: #f1f3f4;
-  border: #dadce0 solid 0.1rem;
-}
-
-button.cals{
-  background-color: #dadce0;
-}
-
-button.ans{
-  background-color: #4285f4;
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: white;
-}
+  screen{
+    display: flex;
+    flex-direction:row;
+    border: 0.1rem solid #ebebeb;
+    border-radius: 0.5rem;
+    background-color: rgb(255, 255, 255);
+    text-align: right;
+    font-size: 2rem;
+    font-weight: bold;
+    width: 95.5%;
+    height: 4rem;
+    padding: 0.1rem;
+  }
+  screen:hover{
+    box-shadow: inset 0 0.03rem 0.2rem rgb(0 0 0 / 10%);
+  }
+  .popupButton{
+    display: block;
+    color: #1a73e8;
+    float: left;
+    background-color: transparent;
+    text-align: center;
+    font-size: 1rem;
+    width: 2rem;
+    height: 2rem;
+  }
+    #popupOn{
+      display: flex;
+      margin-right: auto;
+      margin-bottom: auto;
+    }
+    #popupOn.hide{
+      visibility: hidden;
+    }
+    #answers{
+      display: flex;
+      flex-direction: column;
+    }
+      #preanswer{
+        display: inline;
+        color: #70757a;
+        font-weight: normal;
+        font-size: 0.8rem;
+        overflow: hidden;
+        float: right;
+        width: 18rem;
+        padding-right: 1rem;
+        padding-top: 0.3rem;
+        direction: ltr;
+      }
+      #answer{
+        display: inline;
+        font-weight: normal;
+        overflow: hidden;
+        float: right;
+        width: 18rem;
+        direction: ltr;
+      }
+    #popup{
+      box-shadow: 0 1px 4px rgb(0 0 0 / 28%);
+      top: 1.1rem;
+      left: 0.5rem;
+      position: absolute;
+      border-radius: 0.5rem;
+      background-color: #fff;
+      font-size: 0.8rem;
+      font-weight: normal;
+      min-width: 10rem;;
+    }
+    #popup.hide{
+      display: none;
+    }
+      #popupOff{
+        display: flex;
+        margin-left: 0.5rem;
+        margin-bottom: auto;
+      }
+      #popupOff>.popupButton{
+        left: 1rem;
+      }
+      #popupContent{
+        display: block;
+        text-indent: 1rem;
+        padding-right: 1rem;
+        color: #70757a;
+        line-height: 20px;
+        text-align: center;
+      }
+        .historyButtonWrap{
+          padding-left: 1rem;
+          padding-right: 1rem;
+          display: flex;
+          color: #202124;
+          font-weight: bold;
+          font-size: 1.3rem;
+        }
+          .historyButton{
+            display: flex;
+            width: max-content;
+            height: max-content;
+            padding: 0.5rem;
+            background-color: white;
+            color: #1a73e8;
+            border: #DFE1E5 solid 0.1rem;
+          }
+          .innerText{
+            display: table-cell;
+            padding: 0.4rem;
+            text-indent: 0;
+            font-weight: bold;
+            color: #70757a;
+            font-size: 1.3rem;
+      
+            vertical-align: middle;
+            text-align: center;
+          }
+  calculatorbody{
+    padding-top: 0.5rem;
+    background-color: #fff;
+    width: max-content;
+  }
+    .buttonWrap{
+      width: max-content;
+    }
+      button{
+        margin: 0.2rem;
+        background-color: #f1f3f4;
+        color: #202124;
+        border: none;
+        border-radius: 0.5rem;
+        text-align: center;
+        font-size: 0.8rem;
+        width: 5.5rem;
+        height: 2.3rem;
+      }
+      button:active{
+        background-color: #f1f3f4;
+        border: #dadce0 solid 0.1rem;
+      }
+      button.cals{
+        background-color: #dadce0;
+      }
+      button.ans{
+        background-color: #4285f4;
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: white;
+      }
+    
+    
+    
+      
