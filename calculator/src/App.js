@@ -25,6 +25,8 @@ const App = () => {
       return;
     }
     //let temp = hisList[l-1] + " = " + ansList[l-1];
+
+    
     let temp = `<div class='historyButtonWrap'><button class="historyButton" id="${l-1}-0">${hisList[l-1]}</button><div id="innerText">=</div><button class="historyButton" id="${l-1}-1">${ansList[l-1]}</button></div>`;
     for(let i = l - 2; i >= 0 ; i--){
         temp += `\n<div class='historyButtonWrap'><button class="historyButton" id="${i}-0">${hisList[i]}</button><div id="innerText">=</div><button class="historyButton" id="${i}-1">${ansList[i]}</button></div>`;
