@@ -2,50 +2,28 @@ import React, { useState } from "react";
 import "./App.css"
 
 const App = () => {
-  const cals = ['+', '-', '*', '/', '=', 'AC', 'del', '('];
-  const fours = ['+', '-', '*', '/'];
-  const adds = ['+', '-'];
-  const muls = ['*', '/'];
-
   const [hisList, setHisList] = useState([]);
   const [ansList, setAnsList] = useState([]);
   const [preflag, setPreflag] = useState(false);
-
-  const [flag, setFlag] = useState(false);
   const [popupOn, setPopupOn] = useState(false);
+  const [inputs, setInputs] = useState('0');
+
+  // used only at inputc()
+  // !not important
+  const [flag, setFlag] = useState(false);
   const [lcnt, setLcnt] = useState(0);
   const [rcnt, setRcnt] = useState(0);
   const [last, setLast] = useState('');
-  const [inputs, setInputs] = useState('0');
-
-  const PrintHistory = () => {
-    let l = hisList.length;
-    if(l === 0){
-      document.getElementById("popupContent").innerHTML=`이전 계산식과 결과가 여기에 표시되어 다시 사용할 수 있습니다.`;
-      return;
-    }
-    //let temp = hisList[l-1] + " = " + ansList[l-1];
-
-    
-    let temp = `<div class='historyButtonWrap'><button class="historyButton" id="${l-1}-0">${hisList[l-1]}</button><div id="innerText">=</div><button class="historyButton" id="${l-1}-1">${ansList[l-1]}</button></div>`;
-    for(let i = l - 2; i >= 0 ; i--){
-        temp += `\n<div class='historyButtonWrap'><button class="historyButton" id="${i}-0">${hisList[i]}</button><div id="innerText">=</div><button class="historyButton" id="${i}-1">${ansList[i]}</button></div>`;
-    }
-    document.getElementById("popupContent").innerHTML=temp;
-
-    for(let i = 0; i < l; i++){
-      temp = document.getElementById(`${i}-0`).onclick = () => setInputs(hisList[i]);
-      temp = document.getElementById(`${i}-1`).onclick = () => setInputs(ansList[i]);
-    }
-
-    return;
-  }
-
-  const PopupOn = (bool) => {
-    setPopupOn(bool);
-  }
+  
+  // just for avoiding error of eval()
+  // !not important
 
   const inputc = (c) => {
+    const cals = ['+', '-', '*', '/', '=', 'AC', 'del', '('];
+    const fours = ['+', '-', '*', '/'];
+    const adds = ['+', '-'];
+    const muls = ['*', '/'];
+
     if(preflag) setPreflag(false);
 
     if(c === 'AC'){
@@ -132,77 +110,55 @@ const App = () => {
     }
   };
 
-  if(popupOn === true) PrintHistory();
-  
-  const PrintPre = () => {
-    if(preflag){
-      return hisList[hisList.length-1] + ' =';
+  const ButtonWrapper = probs => {
+    let buttons =[];
+    const lst = probs.lst, mrk = probs.mrk;
+    for(let i = 0; i < lst.length; i++) buttons.push(<button className={mrk[i]} onClick={()=>inputc(lst[i])} key={lst[i]}>{lst[i]}</button>);
+    return <div className="buttonWrap">{buttons}</div>;
+  };
+
+  const PrintHistory = () => {
+    let l = hisList.length;
+    if(l === 0) return <div id="popupContent">이전 계산식과 결과가 여기에 표시되어 다시 사용할 수 있습니다.</div>;
+    
+    const phistory = [];
+    for(let i = l -1; i >= 0; i--){
+      let temp = [];
+      temp.push(<button className="historyButton" key={'historyButton-'+i+'-0'} onClick={() => setInputs(hisList[i])}>{hisList[i]}</button>);
+      temp.push(<div className="innerText" key={'innerText-'+i}>=</div>);
+      temp.push(<button className="historyButton" key={'historyButton-'+i+'-1'} onClick={() => setInputs(ansList[i])}>{ansList[i]}</button>);
+      phistory.push(<div className='historyButtonWrap' key={'historyButtonWrap-'+i}>{temp}</div>);
     }
-    else if(ansList.length === 0) return "JMJ's calculator!"
-    else{
-      return 'Ans = ' + ansList[ansList.length-1];
-    }
+    return phistory;
   }
-  //console.log(hisList);
-  //console.log(ansList);
-  //console.log("last: " + last + "\tcur: " + inputs);
+
+  const PrintPre = () => {
+    if(preflag) return hisList[hisList.length-1] + ' =';
+    else if(ansList.length === 0) return "JMJ's calculator!"
+    else return 'Ans = ' + ansList[ansList.length-1];
+  }
 
   return (
-    <div>
-      <div id="calculator">
-        <div id="display">
-          <div id="popup" className={popupOn ? "" : "hide"}>
-            <div id="popupOff">
-              <button id="popupButton" onClick={()=>PopupOn(false)}>★</button>
-            </div>
-            <pre id='popupContent'></pre>
-          </div>
-          <div id="popupOn" className={popupOn ? "hide" : ""}>
-            <button id="popupButton" onClick={()=>PopupOn(true)}>☆</button>
-          </div>
-          <div id="answers">
-            <div id="preanswer">
-              {PrintPre()}
-            </div>
-            <div id="answer">
-              {inputs}
-            </div>
-          </div>
+    <calculator>
+      <screen>
+        <div id="popupOn" className={popupOn ? "hide" : ""}><button class="popupButton" onClick={()=>setPopupOn(true)}>☆</button></div>
+        <div id="popup" className={popupOn ? "" : "hide"}>
+          <div id="popupOff"><button class="popupButton" onClick={()=>setPopupOn(false)}>★</button></div>
+          <PrintHistory/>
         </div>
-        <div id="calculatorBody">
-          <div className="buttonWrap">
-            <button className="cals" onClick={()=>inputc('(')}>(</button>
-            <button className="cals" onClick={()=>inputc(')')}>)</button>
-            <button className="cals" onClick={()=>inputc('del')}>del</button>
-            <button className="cals" onClick={()=>inputc('AC')}>AC</button>
-          </div>
-          <div className="buttonWrap">
-            <button onClick={()=>inputc('7')}>7</button>
-            <button onClick={()=>inputc('8')}>8</button>
-            <button onClick={()=>inputc('9')}>9</button>
-            <button className="cals" onClick={()=>inputc('/')}>/</button>
-          </div>
-          <div className="buttonWrap">
-            <button onClick={()=>inputc('4')}>4</button>
-            <button onClick={()=>inputc('5')}>5</button>
-            <button onClick={()=>inputc('6')}>6</button>
-            <button className="cals" onClick={()=>inputc('*')}>*</button>
-          </div>
-          <div className="buttonWrap">
-            <button onClick={()=>inputc('1')}>1</button>
-            <button onClick={()=>inputc('2')}>2</button>
-            <button onClick={()=>inputc('3')}>3</button>
-            <button className="cals" onClick={()=>inputc('-')}>-</button>
-          </div>
-          <div className="buttonWrap">
-            <button onClick={()=>inputc('0')}>0</button>
-            <button onClick={()=>inputc('.')}>.</button>
-            <button className="ans" onClick={()=>inputc('=')}>=</button>
-            <button className="cals" onClick={()=>inputc('+')}>+</button>
-          </div>
+        <div id="answers">
+          <div id="preanswer"><PrintPre/></div>
+          <div id="answer">{inputs}</div>
         </div>
-      </div>
-    </div>
+      </screen>
+      <calculatorbody>
+        <ButtonWrapper lst={['(', ')', 'del', 'AC']} mrk={['cals', 'cals', 'cals', 'cals']}/>
+        <ButtonWrapper lst={['7', '8', '9', '/']} mrk={['', '', '', 'cals']}/>
+        <ButtonWrapper lst={['4', '5', '6', '*']} mrk={['', '', '', 'cals']}/>
+        <ButtonWrapper lst={['1', '2', '3', '-']} mrk={['', '', '', 'cals']}/>
+        <ButtonWrapper lst={['0', '.', '=', '+']} mrk={['', '', 'ans', 'cals']}/>
+      </calculatorbody>
+    </calculator>
   );
 };
 
