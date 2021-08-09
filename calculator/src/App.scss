@@ -63,36 +63,45 @@ Calculator{
         color: #70757a;
         line-height: 20px;
         text-align: center;
-
-        .historyButtonWrap{
-          padding-left: 1rem;
-          padding-right: 1rem;
-          display: flex;
+      }
+      .historyButtonWrap{
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        display: flex;
+        color: #202124;
+        font-weight: bold;
+        font-size: 1.3rem;
+        margin: 0.5rem;
+        button{
+          margin: 0.2rem;
+          background-color: #f1f3f4;
           color: #202124;
+          border: none;
+          border-radius: 0.5rem;
+          text-align: center;
+          font-size: 0.8rem;
+          width: 5.5rem;
+          height: 2.3rem;
+        }
+        .historyButton{
+          display: flex;
+          width: max-content;
+          height: max-content;
+          padding: 0.5rem;
+          background-color: white;
+          color: #1a73e8;
+          border: #DFE1E5 solid 0.1rem;
+        }
+        .innerText{
+          display: table-cell;
+          padding: 0.4rem;
+          text-indent: 0;
           font-weight: bold;
-          font-size: 1.3rem;
-          .historyButton{
-            display: flex;
-            width: max-content;
-            height: max-content;
-            padding: 0.5rem;
-            background-color: white;
-            color: #1a73e8;
-            border: #DFE1E5 solid 0.1rem;
-          }
-          .innerText{
-            display: table-cell;
-            padding: 0.4rem;
-            text-indent: 0;
-            font-weight: bold;
-            color: #70757a;
-            font-size: 1.3rem;
-      
-            vertical-align: middle;
-            text-align: center;
-          }
+          color: #70757a;
+          font-size: 1rem;
         }
       }
+      
     }
     #popup.hide{
       display: none;
