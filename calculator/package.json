@@ -8,10 +8,12 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
     "gh-pages": "^3.2.3",
+    "node-scss": "^7.0.3",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "scss": "^0.2.4",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
@@ -40,5 +42,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://kaistlayner.github.io/react/"
+  "homepage": "https://kaistlayner.github.io/react/",
+  "devDependencies": {
+    "sass": "^1.37.5"
+  }
 }

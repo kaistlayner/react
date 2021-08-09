@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./App.css"
+import "./App.scss"
 
 const App = () => {
   const [hisList, setHisList] = useState([]);
@@ -17,7 +17,6 @@ const App = () => {
   
   // just for avoiding error of eval()
   // !not important
-
   const inputc = (c) => {
     const cals = ['+', '-', '*', '/', '=', 'AC', 'del', '('];
     const fours = ['+', '-', '*', '/'];
