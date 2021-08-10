@@ -109,9 +109,9 @@ const App = () => {
     }
   };
 
-  const ButtonWrapper = probs => {
+  const ButtonWrapper = props => {
     let buttons =[];
-    const lst = probs.lst, mrk = probs.mrk;
+    const lst = props.lst, mrk = props.mrk;
     for(let i = 0; i < lst.length; i++) buttons.push(<button className={mrk[i]} onClick={()=>C(lst[i])} key={lst[i]}>{lst[i]}</button>);
     return <div className="buttonWrap">{buttons}</div>;
   };
