@@ -4,52 +4,52 @@ import "./App.scss"
 const App = () => {
   const [hisList, setHisList] = useState([]);
   const [ansList, setAnsList] = useState([]);
-  const [preflag, setPreflag] = useState(false);
+  const [preFlag, setPreFlag] = useState(false);
   const [popupOn, setPopupOn] = useState(false);
   const [inputs, setInputs] = useState('0');
 
-  // used only at inputc()
+  // used only at C()
   // !not important
   const [flag, setFlag] = useState(false);
-  const [lcnt, setLcnt] = useState(0);
-  const [rcnt, setRcnt] = useState(0);
+  const [lCnt, setLCnt] = useState(0);
+  const [rCnt, setRCnt] = useState(0);
   const [last, setLast] = useState('');
   
   // just for avoiding error of eval()
   // !not important
-  const inputc = (c) => {
+  const inputC = (c) => {
     const cals = ['+', '-', '*', '/', '=', 'AC', 'del', '('];
     const fours = ['+', '-', '*', '/'];
     const adds = ['+', '-'];
     const muls = ['*', '/'];
 
-    if(preflag) setPreflag(false);
+    if(preFlag) setPreFlag(false);
 
     if(c === 'AC'){
       setInputs('0');
-      setLcnt(0);
-      setRcnt(0);
+      setLCnt(0);
+      setRCnt(0);
       return;
     }
 
     if(c === ')'){
-      if(rcnt >= lcnt || cals.indexOf(last) !== -1) return;
-      setRcnt(rcnt + 1);
+      if(rCnt >= lCnt || cals.indexOf(last) !== -1) return;
+      setRCnt(rCnt + 1);
     }
     else if(c === '('){
       if(cals.indexOf(last) === -1 && last !== '') return;
-      setLcnt(lcnt + 1);
+      setLCnt(lCnt + 1);
     }
 
     if(c === 'del'){
       setInputs(inputs.slice(0, -1));
-      if(last === '(') setLcnt(lcnt - 1);
-      else if(last === ')') setRcnt(rcnt - 1);
+      if(last === '(') setLCnt(lCnt - 1);
+      else if(last === ')') setRCnt(rCnt - 1);
       setLast(inputs[inputs.length - 1]);
     }
     else if(c === '='){
       if(cals.indexOf(last) !== -1 && last !== ')') return;
-      else if(lcnt !== rcnt) return;
+      else if(lCnt !== rCnt) return;
       let temp = eval(inputs).toString();
       
       if(temp.length > 14) temp = temp.substr(0, 14);
@@ -64,9 +64,9 @@ const App = () => {
       }
       setInputs(temp);
       setLast('');
-      setLcnt(0);
-      setRcnt(0);
-      setPreflag(true);
+      setLCnt(0);
+      setRCnt(0);
+      setPreFlag(true);
     }
     else if(inputs.length > 14) return;
     else if(inputs === '0'){
@@ -112,7 +112,7 @@ const App = () => {
   const ButtonWrapper = probs => {
     let buttons =[];
     const lst = probs.lst, mrk = probs.mrk;
-    for(let i = 0; i < lst.length; i++) buttons.push(<button className={mrk[i]} onClick={()=>inputc(lst[i])} key={lst[i]}>{lst[i]}</button>);
+    for(let i = 0; i < lst.length; i++) buttons.push(<button className={mrk[i]} onClick={()=>C(lst[i])} key={lst[i]}>{lst[i]}</button>);
     return <div className="buttonWrap">{buttons}</div>;
   };
 
@@ -132,7 +132,7 @@ const App = () => {
   }
 
   const PrintPre = () => {
-    if(preflag) return hisList[hisList.length-1] + ' =';
+    if(preFlag) return hisList[hisList.length-1] + ' =';
     else if(ansList.length === 0) return "JMJ's calculator!"
     else return 'Ans = ' + ansList[ansList.length-1];
   }
