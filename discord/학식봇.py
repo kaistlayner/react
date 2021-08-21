@@ -125,4 +125,4 @@ async def 재획용(ctx):
         await ctx.send("알림이 켜졌습니다!")
         # 함수 안에 함수 넣는 방법 아시는 분..?
 
-app.run('ODc4Njc2NzYxODUwODA2MzUy.YSEpgQ.ar2pOI5h0MIDkfrWc60yIpyoAV8')
+app.run('')
